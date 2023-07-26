@@ -1,10 +1,5 @@
 #include "shell.h"
-typedef struct {
-    char *name;
-    char *value;
-} Alias;
 
-Alias aliases[MAX_ALIASES];
 int num_aliases = 0;
 
 /**

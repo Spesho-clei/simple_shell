@@ -21,6 +21,8 @@ int main(int argc, char *argv[])
 	 int exit_status;
 	 int argc_count;
 	 int command_success;
+	 int num_aliases = 0;
+	 pid_t pid;
 
 	 if (argc > 2)
 	 {
@@ -71,14 +73,14 @@ int main(int argc, char *argv[])
 	 free(expanded_input);
 	 for (i = 0; i < num_commands; i++)
 	 {
-		 arg_count = tokenize_input(commands[i], arguments);
+		 argc_count = tokenize_input(commands[i], arguments);
 		 if (arguments[0] == NULL)
 		 {
 			 continue;
 		 }
 		 if (strcmp(arguments[0], "exit") == 0)
 		 {
-			 if (arg_count > 1)
+			 if (argc_count > 1)
 			 {
 				 exit_status = atoi(arguments[1]);
 				 exit(exit_status);
@@ -94,7 +96,7 @@ int main(int argc, char *argv[])
 			 }
 			 if (strcmp(arguments[0], "setenv") == 0)
 			 {
-				 if (arg_count != 3)
+				 if (argc_count != 3)
 				 {
 					 fprintf(stderr, "Error: Invalid syntax. Usage: setenv VARIABLE VALUE\n");
 				 }
@@ -108,7 +110,7 @@ int main(int argc, char *argv[])
 			 }
 			 if (strcmp(arguments[0], "unsetenv") == 0)
 			 {
-				 if (arg_count != 2)
+				 if (argc_count != 2)
 				 {
 					 fprintf(stderr, "Error: Invalid syntax. Usage: unsetenv VARIABLE\n");
 				 }
@@ -123,7 +125,7 @@ int main(int argc, char *argv[])
 			 if (strcmp(arguments[0], "cd") == 0)
 			 {
 				 dir = NULL;
-				 if (arg_count == 1)
+				 if (argc_count == 1)
 				 {
 					 dir = getenv("HOME");
 				 }
@@ -148,11 +150,11 @@ int main(int argc, char *argv[])
 			 }
 			 if (strcmp(arguments[0], "alias") == 0)
 			 {
-				 if (arg_count == 1)
+				 if (argc_count == 1)
 				 {
 					 print_aliases();
 				 } else {
-					 for (j = 1; j < arg_count; j++)
+					 for (j = 1; j < argc_count; j++)
 					 {
 						 print_alias(arguments[j]);
 					 }
@@ -171,7 +173,7 @@ int main(int argc, char *argv[])
 				 fprintf(stderr, "Error: Command not found\n");
 				 continue;
 			 }
-			 pid_t pid = fork();
+			 pid = fork();
 			 if (pid == -1)
 			 {
 				 perror("fork");
@@ -206,4 +208,6 @@ int main(int argc, char *argv[])
 		 fclose(file);
 	 }
 	 return (EXIT_SUCCESS);
+	 }
+	 return (0);
 }

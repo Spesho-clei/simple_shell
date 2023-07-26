@@ -8,14 +8,18 @@
  */
 int check_command_exist(const char *command)
 {
-	char *path_env = getenv("PATH");
+	char *path_env;
+	char *path_copy;
+	char *path;
+
+	path_env = getenv("PATH");
 
 	if (path_env == NULL)
 		return (0);
-	char *path_copy = strdup(path_env);
+	path_copy = strdup(path_env);
 	if (path_copy == NULL)
 		return (0);
-	char *path = strtok(path_copy, ":");
+	path = strtok(path_copy, ":");
 	while (path != NULL) {
 		char full_path[MAX_COMMAND_LENGTH];
 		snprintf(full_path, sizeof(full_path), "%s/%s", path, command);

@@ -16,6 +16,7 @@ int execute_command(char *command)
 	int exit_status;
 	char *dir;
 	int status;
+	pid_t pid;
 
 	if (arguments[0] == NULL)
 	{
@@ -89,14 +90,14 @@ int execute_command(char *command)
 			setenv("OLDPWD", getenv("PWD"), 1);
 			setenv("PWD", current_directory, 1);
 		}
-		return (1)
+		return (1);
 	}
 	if (check_command_exist(arguments[0]) == 0)
 	{
 		fprintf(stderr, "Error: Command not found\n");
 		return (0);
 	}
-	pid_t pid = fork();
+	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork");
