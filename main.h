@@ -12,6 +12,8 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <wait.h>
+#include <fcntl.h>
+#include <stdbool.h>
 
 extern char **environ;
 void _puts(char *str);
@@ -42,5 +44,6 @@ char *_strtok(char *src, const char *delim);
 char *_strcpy(char *dest, char *src);
 ssize_t get_line(char **str);
 int handle_path(char **tokens);
+int change_directory(char *directory);
 
 #endif

@@ -39,44 +39,42 @@ int _isBuiltIn(char *str)
  * Return: 0 if success.
  */
 int _executeBuiltIn(char **tokens)
-{
-	char *directory;
-	int cd_result;
 
-	if ((_strcmp(*tokens, "env")) == 0)
-	{
-		_printenv();
-		return 0;
-	}
-	if ((_strcmp(*tokens, "setenv")) == 0)
-	{
-		if (tokens[1] && tokens[2])
-		{
-			_setenv(tokens[1], tokens[2]);
-			return 0;
-		}
-		printf("Usage: setenv var_name var_value\n");
-		return 0;
-	}
-	if ((_strcmp(*tokens, "cd")) == 0)
 {
-     directory = tokens[1];
-    cd_result = change_directory(directory);
-    return cd_result == 0 ? 0 : 1;
-}
-	if (_strcmp(*tokens, "unsetenv") == 0)
-	{
-		if (tokens[1])
-		{
-			_unsetenv(tokens[1]);
-			return 0;
-		}
-		printf("Usage: unsetenv VAR_NAME\n");
-		return 0;
-	}
+    if ((_strcmp(tokens[0], "env")) == 0)
+    {
+        _printenv();
+        return 0;
+    }
+    if ((_strcmp(tokens[0], "setenv")) == 0)
+    {
+        if (tokens[1] && tokens[2])
+        {
+            _setenv(tokens[1], tokens[2]);
+            return 0;
+        }
+        printf("Usage: setenv var_name var_value\n");
+        return 0;
+    }
+    if ((_strcmp(tokens[0], "cd")) == 0)
+    {
+       char *directory = tokens[1];
+       int cd_result = change_directory(directory);
+        return cd_result == 0 ? 0 : 1;
+    }
+    if (_strcmp(tokens[0], "unsetenv") == 0)
+    {
+        if (tokens[1])
+        {
+            _unsetenv(tokens[1]);
+            return 0;
+        }
+        printf("Usage: unsetenv VAR_NAME\n");
+        return 0;
+    }
 
-	/* Will never reach here because of _isBuiltin() check in _execute() */
-	return 1;
+    /* Will never reach here because of _isBuiltin() check in _execute() */
+    return 1;
 }
 
 /**
