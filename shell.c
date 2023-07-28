@@ -5,8 +5,6 @@
 int history_lines = 0;
 char *history[HISTORY_MAX_LINES] = {NULL};
 
-int execute_command(char **args);
-
 int launch_process(char **args)
 {
     pid_t pid;
