@@ -28,5 +28,6 @@ int execute_pipeline(char ***commands);
 char *expand_env_var(char *input);
 int main(void);
 int handle_redirection(char **args);
+void print_prompt(void);
 
 #endif /* SHELL_H */

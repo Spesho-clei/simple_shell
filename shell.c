@@ -9,7 +9,7 @@ int execute_command(char **args);
 
 int launch_process(char **args)
 {
-    pid_t pid, wpid;
+    pid_t pid;
     int status;
 
     pid = fork();
@@ -32,7 +32,7 @@ int launch_process(char **args)
         /* Parent process */
         do
         {
-            wpid = waitpid(pid, &status, WUNTRACED);
+            waitpid(pid, &status, WUNTRACED);
         } while (!WIFEXITED(status) && !WIFSIGNALED(status));
     }
 
@@ -44,8 +44,9 @@ int execute_pipeline(char ***commands)
     int pipes[2];
     int in = 0;
     pid_t pid;
+    int i;
 
-    for (int i = 0; commands[i] != NULL; i++)
+    for (i = 0; commands[i] != NULL; i++)
     {
         if (pipe(pipes) < 0)
         {
@@ -83,13 +84,14 @@ int execute_pipeline(char ***commands)
 }
 
 void save_history(char *line)
-
-	FILE *fp;
 {
+	FILE *fp;
+	int i;
+
     if (history_lines >= HISTORY_MAX_LINES)
     {
         free(history[0]);
-        wfor (int i = 1; i < HISTORY_MAX_LINES; i++)
+        for (i = 1; i < HISTORY_MAX_LINES; i++)
         {
             history[i - 1] = history[i];
         }
@@ -114,13 +116,14 @@ void load_history(void)
         char *line = NULL;
         size_t len = 0;
         ssize_t read;
+	int i;
 
         while ((read = getline(&line, &len, fp)) != -1)
         {
             if (history_lines >= HISTORY_MAX_LINES)
             {
                 free(history[0]);
-                for (int i = 1; i < HISTORY_MAX_LINES; i++)
+                for (i = 1; i < HISTORY_MAX_LINES; i++)
                 {
                     history[i - 1] = history[i];
                 }
@@ -140,10 +143,12 @@ void load_history(void)
 
 void free_args(char **args)
 {
+	int i;
+
     if (!args)
         return;
 
-    for (int i = 0; args[i]; i++)
+    for (i = 0; args[i]; i++)
     {
         free(args[i]);
     }
@@ -156,6 +161,7 @@ int main(void)
     char **args;
     int status;
     char **expanded_args;
+    int i;
 
     do
     {
@@ -168,7 +174,7 @@ int main(void)
             perror("main: allocation error");
             exit(EXIT_FAILURE);
         }
-        for (int i = 0; args[i] != NULL; i++)
+        for (i = 0; args[i] != NULL; i++)
         {
             expanded_args[i] = expand_env_var(args[i]);
         }
