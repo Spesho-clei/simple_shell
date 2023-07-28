@@ -154,36 +154,3 @@ void free_args(char **args)
     }
     free(args);
 }
-
-int main(void)
-{
-    char *line;
-    char **args;
-    int status;
-    char **expanded_args;
-    int i;
-
-    do
-    {
-        print_prompt();
-        line = read_line();
-        args = split_line(line);
-        expanded_args = malloc(BUFFER_SIZE * sizeof(char *));
-        if (!expanded_args)
-        {
-            perror("main: allocation error");
-            exit(EXIT_FAILURE);
-        }
-        for (i = 0; args[i] != NULL; i++)
-        {
-            expanded_args[i] = expand_env_var(args[i]);
-        }
-        status = execute_command(expanded_args);
-
-        free(line);
-        free(args);
-        free(expanded_args);
-    } while (status);
-
-    return 0;
-}

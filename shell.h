@@ -29,5 +29,6 @@ char *expand_env_var(char *input);
 int main(void);
 int handle_redirection(char **args);
 void print_prompt(void);
+char *expand_env_var(char *input);
 
 #endif /* SHELL_H */
